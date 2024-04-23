@@ -8,18 +8,14 @@ public class MiniMaxPlayer extends GamePlayer {
     private final int oponente;
     public MiniMaxPlayer(int mark, int depth) {
         super(mark, depth);
-        if(mark==1) {
-            oponente = 2;
-        }else {
-            oponente = 1;
-        }
+        oponente = (mark == 1 ? 2 : 1);
     }
 
     @Override
     public boolean isUserPlayer() { return false; }
 
     @Override
-    public String playerName() { return "MiniMax Ficha "+ (myMark == 1 ? "Negra" : "Blanca"); }
+    public String playerName() { return "MiniMax Ficha "+ ( myMark == 1 ? "Negra" : "Blanca" ); }
 
     private int expandTreeMiniMax(int[][] tableroActual, int nivel, int mark){
         //Compruebo que estoy dentro del nivel permitido
