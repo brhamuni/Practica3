@@ -14,9 +14,7 @@ public class HumanPlayer extends GamePlayer {
     }
 
     @Override
-    public String playerName() {
-        return "User" ;
-    }
+    public String playerName() {return "User Ficha "+ (myMark == 1 ? "Negra" : "Blanca");}
 
     @Override
     public Point play(int[][] board) {

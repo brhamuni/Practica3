@@ -16,14 +16,10 @@ public class MiniMaxPlayer extends GamePlayer {
     }
 
     @Override
-    public boolean isUserPlayer() {
-        return false;
-    }
+    public boolean isUserPlayer() { return false; }
 
     @Override
-    public String playerName() {
-        return "MiniMax Player";
-    }
+    public String playerName() { return "MiniMax Ficha "+ (myMark == 1 ? "Negra" : "Blanca"); }
 
     private int expandTreeMiniMax(int[][] tableroActual, int nivel, int mark){
         //Compruebo que estoy dentro del nivel permitido
@@ -60,19 +56,19 @@ public class MiniMaxPlayer extends GamePlayer {
         for(int[][] h : hijos){
             puntuaciones.add(expandTreeMiniMax(h,nivel+1, oponente));
         }
-        int dev=-101;
-        int indDev=-1;
+        int mayorPuntuacion=-101;
+        int indiceMayorPuntuacion=-1;
 
         //Me quedo con la puntuacion mas alta y actualizo la jugada con el movimiento de la maxima puntuacion
         for(int i=0; i<puntuaciones.size(); i++){
-            if(puntuaciones.get(i) > dev){
-                dev=puntuaciones.get(i);
-                indDev=i;
+            if(puntuaciones.get(i) > mayorPuntuacion){
+                mayorPuntuacion=puntuaciones.get(i);
+                indiceMayorPuntuacion=i;
             }
         }
         if(nivel==1)
-            jugada = movimientos.get(indDev);
-        return dev;
+            jugada = movimientos.get(indiceMayorPuntuacion);
+        return mayorPuntuacion;
     }
 
     int min(ArrayList<int[][]> hijos, ArrayList<Integer> puntuaciones, int nivel){
@@ -80,26 +76,23 @@ public class MiniMaxPlayer extends GamePlayer {
             puntuaciones.add(expandTreeMiniMax(h,nivel+1,myMark));
         }
         //Me quedo con la puntuacion mas baja y actualizo la jugada con el movimiento de la minima puntuacion
-        int dev=101;
+        int menorPuntuacion=101;
         for(int i: puntuaciones){
-            if(i < dev){
-                dev=i;
-            }
+            if(i < menorPuntuacion){ menorPuntuacion=i; }
         }
-        return dev;
+        return menorPuntuacion;
     }
 
-    int vencedor(int[][] tableroActual){
-        if(BoardHelper.getWinner(tableroActual)==myMark)
+    int vencedor(int[][] tableroActual) {
+        if (BoardHelper.getWinner(tableroActual) == myMark) {
             return 100;
-        else
-            if(BoardHelper.getWinner(tableroActual)== oponente)
-                return -100;
-            else
-                if(BoardHelper.getWinner(tableroActual) == 0)
-                    return 0;
-                else
-                    return BoardHelper.getPlayerStoneCount(tableroActual,myMark)- BoardHelper.getPlayerStoneCount(tableroActual, oponente);
+        } else if (BoardHelper.getWinner(tableroActual) == oponente) {
+            return -100;
+        } else if (BoardHelper.getWinner(tableroActual) == 0) {
+            return 0;
+        } else {
+            return BoardHelper.getPlayerStoneCount(tableroActual, myMark) - BoardHelper.getPlayerStoneCount(tableroActual, oponente);
+        }
     }
 
     @Override
