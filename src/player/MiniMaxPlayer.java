@@ -1,17 +1,17 @@
 package player;
-
 import game.BoardHelper;
-
 import java.awt.*;
 import java.util.ArrayList;
 
 public class MiniMaxPlayer extends GamePlayer {
     private Point jugada;
-    private final int vsMark;
+    private final int oponente;
     public MiniMaxPlayer(int mark, int depth) {
         super(mark, depth);
-        if(mark==1) vsMark=2;
-        else vsMark = 1;
+        if(mark==1)
+            oponente =2;
+        else
+            oponente = 1;
     }
 
     @Override
@@ -21,18 +21,22 @@ public class MiniMaxPlayer extends GamePlayer {
 
     @Override
     public String playerName() {
-        return "Minimax player v2";
+        return "MiniMax Player";
     }
-    private int expandTreeMiniMax(int[][] padre, int nivel, int mark){
+
+    private int expandTreeMiniMax(int[][] tableroActual, int nivel, int mark){
         //Compruebo que estoy dentro del nivel permitido
         if(nivel <= this.depth){
-            if(BoardHelper.hasAnyMoves(padre,mark)){//Hay movimientos posibles
-                ArrayList<Point> movimientos = BoardHelper.getAllPossibleMoves(padre,mark);
+            if(BoardHelper.hasAnyMoves(tableroActual,mark)){//Hay movimientos posibles
+                //Array de mmovimientos posibles
+                ArrayList<Point> movimientos = BoardHelper.getAllPossibleMoves(tableroActual,mark);
+                //Array de matrices con las posibles tableros
                 ArrayList<int[][]> hijos = new ArrayList<>();
+                //Array con las puntuaciones
                 ArrayList<Integer> puntuaciones = new ArrayList<>();
                 //Creo todos los posibles tableros despues de los posibles movimientos que hemos obtenido
                 for(Point m : movimientos){
-                    hijos.add(BoardHelper.getNewBoardAfterMove(padre,m,mark));
+                    hijos.add(BoardHelper.getNewBoardAfterMove(tableroActual,m,mark));
                 }
                 //Si estamos en nuestro turno expandimos max
                 if(mark==myMark){
@@ -42,18 +46,18 @@ public class MiniMaxPlayer extends GamePlayer {
                 }
             }else{
                 //Estoy en un nivel permitido pero ya no tengo movimientos posibles
-                return vencedor(padre);
+                return vencedor(tableroActual);
             }
         }else{
             //Si he llegado al nivel permitido calculo el vencedor
-           return vencedor(padre);
+           return vencedor(tableroActual);
         }
     }
 
     int max(ArrayList<int[][]> hijos, ArrayList<Point> movimientos, ArrayList<Integer> puntuaciones, int nivel){
         //Recorro todos los hijos expandiendo hasta que me pase de nivel
         for(int[][] h : hijos){
-            puntuaciones.add(expandTreeMiniMax(h,nivel+1,vsMark));
+            puntuaciones.add(expandTreeMiniMax(h,nivel+1, oponente));
         }
         int dev=-101;
         int indDev=-1;
@@ -84,17 +88,17 @@ public class MiniMaxPlayer extends GamePlayer {
         return dev;
     }
 
-    int vencedor(int[][] padre){
-        if(BoardHelper.getWinner(padre)==myMark)
+    int vencedor(int[][] tableroActual){
+        if(BoardHelper.getWinner(tableroActual)==myMark)
             return 100;//Compruebo si es tablero final
         else
-        if(BoardHelper.getWinner(padre)==vsMark)
-            return -100;
-        else
-        if(BoardHelper.getWinner(padre) == 0)
-            return 0;
-        else
-            return BoardHelper.getPlayerStoneCount(padre,myMark)- BoardHelper.getPlayerStoneCount(padre,vsMark);
+            if(BoardHelper.getWinner(tableroActual)== oponente)
+                return -100;
+            else
+                if(BoardHelper.getWinner(tableroActual) == 0)
+                    return 0;
+                else
+                    return BoardHelper.getPlayerStoneCount(tableroActual,myMark)- BoardHelper.getPlayerStoneCount(tableroActual, oponente);
     }
 
     @Override
