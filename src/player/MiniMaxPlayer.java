@@ -57,9 +57,9 @@ public class MiniMaxPlayer extends GamePlayer {
         int indDev=-1;
 
         //Me quedo con la puntuacion mas alta y actualizo la jugada con el movimiento de la maxima puntuacion
-        for(int i : puntuaciones){
-            if(i > dev){
-                dev=i;
+        for(int i=0; i<puntuaciones.size(); i++){
+            if(puntuaciones.get(i) > dev){
+                dev=puntuaciones.get(i);
                 indDev=i;
             }
         }
@@ -74,7 +74,7 @@ public class MiniMaxPlayer extends GamePlayer {
         }
         //Me quedo con la puntuacion mas baja y actualizo la jugada con el movimiento de la minima puntuacion
         int dev=101;
-        for(int i:puntuaciones){
+        for(int i: puntuaciones){
             if(i < dev){
                 dev=i;
             }
