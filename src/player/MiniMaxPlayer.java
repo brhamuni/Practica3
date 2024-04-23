@@ -24,26 +24,28 @@ public class MiniMaxPlayer extends GamePlayer {
         return "Minimax player v2";
     }
     private int expandTreeMiniMax(int[][] padre, int nivel, int mark){
-        if(nivel <= this.depth){//Estoy dentro del nivel permitido
+        //Compruebo que estoy dentro del nivel permitido
+        if(nivel <= this.depth){
             if(BoardHelper.hasAnyMoves(padre,mark)){//Hay movimientos posibles
                 ArrayList<Point> movimientos = BoardHelper.getAllPossibleMoves(padre,mark);
                 ArrayList<int[][]> hijos = new ArrayList<>();
                 ArrayList<Integer> puntuaciones = new ArrayList<>();
-                //Creo todos los posibles movientos despues de los posibles movimientos
+                //Creo todos los posibles tableros despues de los posibles movimientos que hemos obtenido
                 for(Point m : movimientos){
                     hijos.add(BoardHelper.getNewBoardAfterMove(padre,m,mark));
                 }
+                //Si estamos en nuestro turno expandimos max
                 if(mark==myMark){
                     return max(hijos,movimientos,puntuaciones,nivel);
-                }else{
+                }else{ //Sino expandimos min
                     return min(hijos,puntuaciones,nivel);
                 }
             }else{
-                //Estoy en un nivel permitido pero ya no tengo movimeintos
+                //Estoy en un nivel permitido pero ya no tengo movimientos posibles
                 return vencedor(padre);
             }
         }else{
-            //Si ya no puedo expanndirme mas y he llegado a la profundidad maxima miro quien gana
+            //Si he llegado al nivel permitido calculo el vencedor
            return vencedor(padre);
         }
     }
