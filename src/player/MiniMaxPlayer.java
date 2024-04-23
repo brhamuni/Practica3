@@ -90,7 +90,7 @@ public class MiniMaxPlayer extends GamePlayer {
 
     int vencedor(int[][] tableroActual){
         if(BoardHelper.getWinner(tableroActual)==myMark)
-            return 100;//Compruebo si es tablero final
+            return 100;
         else
             if(BoardHelper.getWinner(tableroActual)== oponente)
                 return -100;
