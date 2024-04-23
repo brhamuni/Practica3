@@ -8,10 +8,11 @@ public class MiniMaxPlayer extends GamePlayer {
     private final int oponente;
     public MiniMaxPlayer(int mark, int depth) {
         super(mark, depth);
-        if(mark==1)
-            oponente =2;
-        else
+        if(mark==1) {
+            oponente = 2;
+        }else {
             oponente = 1;
+        }
     }
 
     @Override
