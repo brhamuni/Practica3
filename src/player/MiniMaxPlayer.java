@@ -17,6 +17,13 @@ public class MiniMaxPlayer extends GamePlayer {
     @Override
     public String playerName() { return "MiniMax Ficha "+ ( myMark == 1 ? "Negra" : "Blanca" ); }
 
+    /**
+     * @brief Expande el árbol de búsqueda Minimax para determinar la mejor jugada posible.
+     * @param tableroActual La representación del tablero actual.
+     * @param nivel El nivel actual en nuestro arbol de busqueda.
+     * @param mark El id del jugador actual.
+     * @return La puntuación de la mejor jugada posible.
+     */
     private int expandTreeMiniMax(int[][] tableroActual, int nivel, int mark){
         //Compruebo que estoy dentro del nivel permitido
         if(nivel <= this.depth){
@@ -47,6 +54,14 @@ public class MiniMaxPlayer extends GamePlayer {
         }
     }
 
+    /**
+     * @brief Realiza la funcion MAX en el árbol de búsqueda.
+     * @param hijos Lista de tableros hijos a evaluar.
+     * @param movimientos Lista de movimientos posibles.
+     * @param puntuaciones Lista de puntuaciones de los movimientos posibles.
+     * @param nivel El nivel actual en el árbol de búsqueda.
+     * @return La puntuación máxima encontrada.
+     */
     int max(ArrayList<int[][]> hijos, ArrayList<Point> movimientos, ArrayList<Integer> puntuaciones, int nivel){
         //Recorro todos los hijos expandiendo hasta que me pase de nivel
         for(int[][] h : hijos){
@@ -62,11 +77,19 @@ public class MiniMaxPlayer extends GamePlayer {
                 indiceMayorPuntuacion=i;
             }
         }
-        if(nivel==1)
+        if(nivel==1) {
             jugada = movimientos.get(indiceMayorPuntuacion);
+        }
         return mayorPuntuacion;
     }
 
+    /**
+     * @brief Realiza la funcion MIN en el árbol de búsqueda.
+     * @param hijos Lista de tableros hijos a evaluar.
+     * @param puntuaciones Lista de puntuaciones de los movimientos.
+     * @param nivel El nivel actual en el árbol de búsqueda.
+     * @return La puntuación mínima encontrada.
+     */
     int min(ArrayList<int[][]> hijos, ArrayList<Integer> puntuaciones, int nivel){
         for(int[][] h : hijos){
             puntuaciones.add(expandTreeMiniMax(h,nivel+1,myMark));
@@ -79,6 +102,11 @@ public class MiniMaxPlayer extends GamePlayer {
         return menorPuntuacion;
     }
 
+    /**
+     * @brief Determina el resultado del juego en el tablero actual.
+     * @param tableroActual La representación actual del tablero.
+     * @return La puntuación del juego en el tablero actual.
+     */
     int vencedor(int[][] tableroActual) {
         if (BoardHelper.getWinner(tableroActual) == myMark) {
             return 100;
