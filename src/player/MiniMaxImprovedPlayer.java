@@ -19,7 +19,7 @@ public class MiniMaxImprovedPlayer extends GamePlayer {
     public boolean isUserPlayer() { return false; }
 
     @Override
-    public String playerName() { return "MiniMax Ficha "+ ( myMark == 1 ? "Negra" : "Blanca" ); }
+    public String playerName() { return "MiniMaxImproved Ficha "+ ( myMark == 1 ? "Negra" : "Blanca" ); }
 
     /**
      * @brief Expande el árbol de búsqueda Minimax para determinar la mejor jugada posible.
